@@ -27,7 +27,7 @@ import net.javaguides.spring.repository.EmployeeRepository;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class EmployeeControllerITests {
+class EmployeeControllerITests {
 
   @Autowired
   private MockMvc mockMvc;

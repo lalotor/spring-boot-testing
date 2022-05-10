@@ -3,23 +3,19 @@ package net.javaguides.spring.service.impl;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.RequiredArgsConstructor;
 import net.javaguides.spring.exception.ResourceNotFoundException;
 import net.javaguides.spring.model.Employee;
 import net.javaguides.spring.repository.EmployeeRepository;
 import net.javaguides.spring.service.EmployeeService;
 
 @Service
+@RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-  @Autowired
-  private EmployeeRepository employeeRepository;
-
-  public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
-    this.employeeRepository = employeeRepository;
-  }
+  private final EmployeeRepository employeeRepository;
 
   @Override
   public Employee saveEmployee(Employee employee) {

@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.RequiredArgsConstructor;
+import net.javaguides.spring.dto.EmployeeDTO;
+import net.javaguides.spring.dto.TransformEmployee;
 import net.javaguides.spring.model.Employee;
 import net.javaguides.spring.service.EmployeeService;
 
@@ -24,11 +26,12 @@ import net.javaguides.spring.service.EmployeeService;
 public class EmployeeController {
 
   private final EmployeeService employeeService;
+  private final TransformEmployee transformEmployee;
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public Employee createEmployee(@RequestBody Employee employee) {
-    return employeeService.saveEmployee(employee);
+  public Employee createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    return employeeService.saveEmployee(transformEmployee.transformFrom2ndTo1st(employeeDTO));
   }
 
   @GetMapping
@@ -44,7 +47,9 @@ public class EmployeeController {
   }
 
   @PutMapping
-  public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+  public ResponseEntity<Employee> updateEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    Employee employee = transformEmployee.transformFrom2ndTo1st(employeeDTO);
+
     return employeeService.getEmployeeById(employee.getId())
         .map(dbEmployee -> employeeService.updateEmployee(employee))
         .map(ResponseEntity::ok)
@@ -55,7 +60,7 @@ public class EmployeeController {
   public ResponseEntity<String> deleteEmployee(@PathVariable("id") long employeeId) {
     employeeService.deleteEmployee(employeeId);
 
-    return new ResponseEntity<String>("Employee deleted successfully", HttpStatus.OK);
+    return new ResponseEntity<>("Employee deleted successfully", HttpStatus.OK);
   }
 
 }
